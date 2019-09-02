@@ -1,0 +1,191 @@
+/*********************************************************
+ * Homework 5: graph traversal
+ * Comp 15 Spring 2019 
+ * 
+ * Author: Matias Korman, Alyssa Rose
+ * 
+ *********************************************************/
+
+This homework assignment contains a partial implementation of Graph 
+BFS traversal.
+
+***************************************************************************
+
+/***Aknowledgements***/
+
+I read about BFS on GeekForGeeks and read about the data structures
+used from the textbook
+
+**********************************************************************
+
+/***Compile***/
+
+Running main: compile with 'make sixdegrees', and executable is
+./sixdegrees
+for interactive mode, and ./sixdegrees [input file] for file based
+
+Running unit tests: compile with 'make test-graph' and executable is 
+./test-graph
+***********************************************************************
+
+/***Files***/
+
+
+main.cpp                : main driver of the project. Creates and 
+						run's an instance of SixDegrees 
+Graph.cpp               : graph class with extra helping tools to run
+							DFS
+Graph.h                 : interface of graph class above
+LinkedList.cpp          : simple template linked list class used for
+							DFS
+LinkedList.h            : interface of Linked list class above
+NodeType.h              : interface of Nodetype class (a simple struct
+						used in the linked list class)
+Stack.cpp               : simple template stack class used for DFS
+Stack.h                 : interface of Stack class above
+Queue.cpp               : simple template queue class used for DFS
+Queue.h                 : interface of Queue class above
+actors.txt              : sample list of actors and the movies they
+							have been in
+test_input.txt          : sample test input for the algorithm
+the_sixdegrees          : reference implementation for students to use
+							as reference
+README                  : this file
+
+
+***************************************************************************
+Note: the code is not complete on purpose. Students must create several files 
+as implement some functions in Graph class as well as the main driver.
+
+***************************************************************************
+
+/***Data Structures***/
+
+This program uses a multitude of different concepts from Comp15 for its design
+
+	***Graph Class***: uses stacks and queues to implement graph functions, and
+	its vertices are represented by objects of the Actor class and where the
+	edges are strings of movie titles in which the two Actors it connects
+	appeared together in (if there is more than one, the first movie they
+	appeared in together is kept)
+
+	***Actor Class***: the actor class uses a linked list to store the movie 
+	titlesthat the Actor object appears in, and contains standard
+	operations 
+	for
+	manipulating the linked list (functions which are also borrowed 
+	from
+	the linked list class that was provided)
+
+	***SixDegrees Class***: Handles file/io operations in order to
+	instantiate
+	an object of the graph class, and read in actor names and the
+	movies they
+	appeared in to create the vertices and edges of the graph. 
+**********************************************************************
+****
+
+/***Testing***/
+
+test-graph: 
+
+	***General***
+	Test graph performs unit tests on all of the written functions in
+	order
+	to make sure they worked properly stand alone. The file is divided
+	by
+	the classes required for the homework (actor, graph, six degrees)
+	and
+	uses error statements to check for correct output
+
+	***Modifications***
+	Some of the original functions were modified in order to print out
+	error statements within the function, or changed the return type on
+	the function in order to check for specific values.
+
+	***Unit tests with dependencies***
+	Nearly all of the functions are first reliant on populate_graph()
+	such that there was an initialized graph object that the tests 
+	could be performed on. Because of this, the functions that were
+	needed by other unit test functions (often last case resort if
+	work arounds didn't exist such that the functions could be 
+	independent) were tested extensively before moving on.
+
+	***testing populate graph***
+	The populate_graph() function used multiple cerr statements and
+	helper functions like printMovieList() in order to check that
+	a.) the correct actor was made and b.) the movie list wasn't
+	empty and contained the correct values. In addition to this, I
+	also checked edge cases (making sure there wasn't an error
+	in the event someone tried to access non existent actors
+	or indexed out of the vertices array).
+
+	***Private Attributes***
+	For the purpose of testing, some private attributes were made 
+	public 
+	to a.) assure the right thing was printed and b.) make sure the
+	getter
+	functions were returning the private attributes correctly. This was
+	mainly done through printing out the adresses that the pointers
+	of the private attributes contained, and making sure they matched
+	the 
+	adress of what was returned by the getter function.
+
+	***Edge Cases***
+	All of the unit tests checked for edge cases, although if functions
+	in the original classes were made to have cerr statements, they
+	have
+	since been removed for the purpose of providing.
+
+	Multiple small tests were run to check the functionality of 
+	get_edge()
+	when the actors didn't exist, or attempting to run connect() when
+	one of the actors wasn't in the graph.
+
+	***Report Path***
+	1.) normal testing, both actors in the graph. I used the examples
+	present in the spec and some of the examples in the expected
+	output file to make sure the shortest path was always printed
+
+	2.) no path exists: the function prints out that there isn't
+	a connection given that a path does not exist between two actors.
+	I checked for path existence through use of a bool that would
+	only equate to true given that the neighbor Actor object
+	eventually equated to the target.
+
+	3.) Actors not in the graph: due to the setup of my BFS
+	fucntion, the report path will not be callled unless the
+	actors both exist. Therefore their is "logic-screening"
+	even before the function is called to make sure the inputs
+	are valid
+
+
+
+myoutput.txt: Contains the output from running ./sixdegrees
+test_input.txt
+ > myoutput.txt. It matched the reference file except for two lines
+ when
+ connecting Stanley Tucci an Meryl Streep in which it uses a different
+ movie that the two appeared in besides the one used in the reference
+
+ myoutput1.txt: Same as myoutput.txt, but done with a modified
+ test_input
+ file in order to make sure the run() function properly handled more
+ cases of nonexistent actors or when the file ended with an odd number
+ of actors (where the BFS func wasn't ran since there was 1 actor left 
+ over)
+**********************************************************************
+****
+
+/***Known issues/Struggles***/
+
+1.) runtime to populate the graph and add the edges is quite slow. 
+Because of unit testing, I know the error lies in the process
+of adding edges an not in making the vertices
+
+2.) When trying to populate graph, I was originally getting empty movie
+lists despite the actor object existing. Thanks to the help of TA's, we
+found that the error was in where the vertex was being added to the 
+graph,
+which was before the movie's were added, which was due to a design flaw
+when I read in the graph
