@@ -1,0 +1,19 @@
+**************************************************
+Alyssa Rose
+Lab 7 
+6 - March - 2019
+*************************************************
+Compile: compile with "make", run with "./hookbookBattles"
+
+Program Purpose:
+	Creates an AbilityList and uses HookBookBattles
+	in order to battle pirates
+
+Acknowledgements:
+	read about the big three in prelab,
+	lab and lecture
+
+Files:
+	Abilities.cpp: implements the Abilities.h class
+
+	HookBookBattles.cpp: implements the HookBookBattles class
