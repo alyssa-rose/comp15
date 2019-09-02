@@ -1,0 +1,61 @@
+/**********************************************************
+*
+* HW4: BinarySearchTree
+* Comp 15 Spring 2019 
+* README
+* Author: Alyssa Rose
+*
+*********************************************************/
+Compile/run: Compile using "make", run executable 
+with "./hw4"
+
+*****************************************************************************
+Program Purpose: 
+This program handles and manipulates a binary search
+tree. Learning the basics of searching/inserting/removing in a binary tree
+
+*****************************************************************************
+Acknowledgements: 
+Read about binary search trees on Quora, GeeksForGeeks, and Data Structures 
+and Algorithms chapter 5
+
+*****************************************************************************
+Files:
+main.cpp: driver for the BinarySearchTree class and provided in starter
+code
+
+BinarySearchTree.h: provided in starter code, header file for the BST class
+
+BinarySearchTree.cpp: Partially written, implementation file of the BST
+class with basic binary tree operations like inserting, removing, searching 
+and copying the tree.
+
+BianrySearchTree-unittest.cpp: tester file for the class/functions. Uses 
+Google testing to check expected output against function output
+
+*****************************************************************************
+Data Structures:
+Binary tree; tree in which each node has at max two children (left and
+right child) and may or may not be full or complete trees
+
+*****************************************************************************
+Testing: 
+Most testing was done in the BinarySearchTree-unittest.cpp file.
+
+The testing mostly checks for edge cases instead of general cases;
+more specifically testing the cases in which the tree is empty 
+or just the root node. Behaviour of the functions was also tested 
+at terminal leaves.
+
+The remove function was tested in 4 cases: removal of a node with 
+no children,a node with only a left child, a node with only a right 
+child, and a node with 2 children. This covers the cases of a node in 
+the middle of a treeand a node that is a terminal leaf.
+
+Tree_height was tested in three cases that are to be considered: 
+when the tree doesn't exist, when the tree has only the root and when 
+the tree contains more nodes.
+
+Contains was tested in cases where the tree doesn't exist, testing
+if the function returns true on nodes that are leaves and in the 
+middle of the tree, and testing when the function should return false.

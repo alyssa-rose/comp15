@@ -1,0 +1,13 @@
+CXX      = clang++
+CXXFLAGS = -std=c++11 -Wall -Wextra -g3 
+DEPS = BinarySearchTree.h
+
+%.o: %.cpp $(INCLUDES)
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+unittests: LDLIBS   += -lgtest -lpthread
+unittests:  runalltests.o BinarySearchTree-unittest.o BinarySearchTree.o
+	$(CXX) -o ${LDFLAGS} $@ $^ ${LDLIBS}
+
+clean:
+	rm -f *.o core* *~ unittests
