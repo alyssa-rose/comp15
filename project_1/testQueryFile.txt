@@ -1,0 +1,13 @@
+i AA
+i C
+i TAT
+i TATC
+i TATCCC
+i GGGG
+d
+f out1.txt
+i GCGCGC
+i GGGGGA
+i GGATAA
+q GGA
+p

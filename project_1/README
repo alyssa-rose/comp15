@@ -1,0 +1,145 @@
+Alyssa Rose
+Comp 15 Proj 1
+1 - March - 2019
+
+
+Compile:
+
+	compile with "make"
+	executable ./SeqMatch [query file] [output location]
+
+******************************************************************************
+
+Program Purpose:
+	
+	The program adds and manipulates sequences of DNA to a 
+	trie tree. 
+
+******************************************************************************
+
+Aknowledgements:
+	I read about trie trees on geek for geeks and stack
+	overflow and the textbook
+
+******************************************************************************
+
+Notes:
+	The final structure differs slightly than the model proposed in
+	the planning portion of the project assignment. Instead of a 
+	"end-of-word" node, the struct now contains the 4 trieNodes for
+	the children and a boolean "end" that is true when that node is the 
+	last letter in the word and false otherwise.
+
+******************************************************************************
+
+Files:
+
+	Grep-unittest.cpp: 
+		Tests the functions in the Grep class using small
+		tests that handle and challenge the possible edge cases.
+		If there are dependent unit tests (dependent on other funcs),
+		then those functions were tested before use in the 
+		following unit tests.
+
+	Grep.cpp:
+		implementation file for the Grep class. Handles insertion,
+		removal, deletion and queries. There are also a multitude
+		of helper functions that assist in modularizing the 
+		necessary functions. 
+
+
+	SeqMatch.cpp:
+		driver for the Grep class 
+
+
+	Grep.h:
+		header file for Grep.cpp
+
+******************************************************************************
+
+Data Structure:
+
+	The data structure used is a trie tree. Each node
+	has 5 children that represent A, C, G, T and a sentinel
+	node to represent if the last letter represents the end of a 
+	particular sequence
+
+******************************************************************************
+
+Testing:
+
+	testing is done within the Grep-unittest file; each of the functions
+	utilize the public versions of the functions in the Grep class; some
+	private variables or functions (where it didn't make sense to
+	have public versions) were made public in the header file
+
+	The functions test the edge cases that could arise with all of the 
+	functions in the Grep class, and use cerr statements (within
+	conditionals) to check if the appropriate value was returned or
+	the correct action was implemented. 
+
+	Due to the nature of the project, some of the unit tests rely on
+	other functions in order for them to be tested. If a function
+	is dependent in this way, the other functions were teste first.
+	Such things would include the necessity of using the readFile
+	function in order to form the trie tree, which was also the 
+	function that was first tested.
+
+	The helper functions were also tested individually to rule out
+	the chance for them being the source of error in the functions
+	that they help with.
+
+******************************************************************************
+
+Notes and bugs: 
+
+	Prefix: Works under all conditions 
+
+	Print: works under all conditions
+
+	Query: works under all conditions
+		Notes: Extremely difficult to 
+		implement, and a multitude of design
+		barriers. For next years, emphasizing
+		the difficult and time needed for query
+		(and making the students demonstrate their
+		knowledge of design in week1 deliverable
+		might be helpful)
+
+	Insert: works under all conditions
+
+	numNodes: works under all conditions
+
+	deleteTrie: works under all conditions
+
+	remove: works under all conditions
+
+	Note: Outfile change wasn't immediate due to lag in
+	update between laptop and server. Sometimes printing
+	would work and be immediately noticeable and other
+	times wouldn't print. The issue wasn't due to a single
+	command which is why I believe it was in how my laptop
+	was syncing with the server.
+
+	********************************
+	SOME FUNCTIONS ARE OVER 30 LINES: 
+
+	in the cases where they
+	are, there was no efficient or comprehensive approach to
+	shortening them. The ones that break the rule are recursive ones 
+	that need a multitude of base cases. Because of that, it
+	wasn't possible to condense them, or at least it didn't 
+	make sense.
+
+******************************************************************************
+a.) Grep is the only class and is where all operations
+	occur
+b.) O(n); even though the trie tree makes searching
+	easier, worst case scenario is that you have to
+	visit every need to get the particular sequence
+	for removal, query, prefix etc
+c.) Space complexity is O(numNodes*4) ~= O(N); Since
+	each node N that exists could have (worst case)	
+	4 children, then space requires that we consider
+	the possibility that each existing node 
+	has 4 childrens

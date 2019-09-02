@@ -1,0 +1,111 @@
+Alyssa Rose
+Comp15 Proj 1: Grep
+28 - Feb - 2019
+
+TA: Daniel
+
+1.) Data structures 
+
+	A trie tree with 5 children in each node; the 4 children
+	will represent the letters A, T, G, and C and the 5th
+	child will act as a sentinel to the specific DNA sequence,
+	i.e. when the end of the specific sequence/word has been reached.
+
+	The runtime will be an issue as it will be log(n) in the worst
+	case where n is the max depth we have to traverse to when searching 
+	or removing.
+
+
+2.) Insert/query/remove...
+
+	Insert:
+	Because all of the nodes are organized in some form of 
+	an alphabetical order (but with 4 nodes instead of 26), then
+	there exists only one possible unique spot for a sequence to go.
+	The trie tree also allows for easier insertion; i.e. if there
+	is already a sequence that varies from the new sequence by one,
+	then "insertion" is really just the addition of one more letter
+	and the sentinel.
+
+	Query:
+	Traversal of the tree in query and in the insert commands will 
+	be extremely similar, expcept without the addition of more nodes
+	as is the case in insertion. The "next move" through the tree can
+	be easily determined by looking at the next letter in the sequence 
+	that we are comparing against.
+
+	for some sequence "AGCT" the tree will be traversed by first doing
+	basic checks (i.e. is root NULL) and then at each progression 
+	checking if the next node exists and seeing if the sequence ending
+	node contains a value. This entire process will be down recursively
+	to return the smallest possible sequence. 
+
+
+	Prefix:
+
+	In prefix, after basic checks on the nodes have been done, 
+	it will be necessary to first find the specified prefix and then 
+	print out ALL of the nodes in the subtree that results. Because the 
+	nodes are being visited recursively, the sequences will always 
+	print in alphabetical order and with the shortest possible sequences
+	first (as they will be the first visited nodes)
+
+	Remove:
+	
+	Removing from the tree will consist of finding the particular 
+	sequence we want an destroying (setting equal to NULL) the nodes
+	of the word we no longer need (and the nodes that aren't in use 
+	with other sequences). Outline is detailed in a drawing presented to
+	TA to better explain the thought process
+
+	check how many children NULL as a base case (if all NULL, remove entire node)
+
+	Number of Nodes:
+
+	This will be called recursively to count the nodes where the base
+	case is hitting a node where all children are NULL (except for the 
+	sentinel node). Thus it will traverse all possible such subtrees
+	and count the number of nodes.
+
+	Print:
+
+	This function will traverse through the tree (in the same manner as
+	Number of Nodes), and will naturally return the strings in 
+	alphabetical order as it will visit the sequences closest to 
+	"AAAA..." first then the "CCC..." sequences.
+
+	Delete:
+
+	This function will iterate through the tree in a post-order 
+	traversal and delete the sentinels and last letters of the longest
+	sequences first, then the next longest and so forth until it reaches the root. The function 
+	can use remove as a helper.
+
+3.) Justifying my solution
+	
+	The solution allows for the simplest form of insertion and deletion
+	(as outlined in the insert and remove functions) and creates a sense
+	of order that can be easily maintained (on par with the layout of 
+	the std binary search tree algorithm)
+
+4.) Code structure
+	
+	There will be a Grep class that will consist of
+	the trieNode struct and the functions that were mentioned.
+
+
+5.) any current code
+
+	nope
+
+6.) pseudocode
+	
+	search (trieNode *root)
+	
+	if node is null, then we've reached a leaf and will return
+
+	else we aren't at a leaf
+		search through "A" subtree (trieNode[0])
+		search through "C" subtree
+		search through "G" subtree
+		search through "T" subtree

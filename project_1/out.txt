@@ -1,0 +1,7 @@
+AA inserted
+C inserted
+TAT inserted
+TATC inserted
+TATCCC inserted
+GGGG inserted
+There are 0 nodes in the database

@@ -1,0 +1,8 @@
+Output file has been changed to out1.txt
+GCGCGC inserted
+GGGGGA inserted
+GGATAA inserted
+Match found: GGATAA 50%
+GCGCGC
+GGATAA
+GGGGGA
