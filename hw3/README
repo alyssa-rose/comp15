@@ -1,0 +1,99 @@
+/**********************************************************
+* HW3: Metro Simulator
+* Comp 15 Spring 2019 
+* README
+* Author: Hayden Wolff, Alyssa Rose
+*
+*********************************************************/
+
+Compile/run: Compile using "make MetroSim", run executable with
+"./MetroSim stationsFile passFile [commands]"
+
+Program Purpose: This homework assignment handles a running train
+to accomodate passengers arriving/departing a metro. Learn how to
+design and modularize code and work with documented libraries.
+
+Acknowledgements: 
+
+Files: 
+main.cpp: STUDENT TO-DO: Main file should be short and handle 
+simple driver functions such as reading in files. 
+
+MetroSim.cpp: STUDENT TO-DO: Implementation of MetroSim class.
+Main functionality of running the Metro Simulation, should be
+able to move trains and deal with passengers going on/off the 
+train. 
+
+MetroSim.h: STUDENT TO-DO: Interface of MetroSim class.
+
+Station.cpp: Implementation of Station class. Allows for various
+functions related to accessing the information of the Station
+class and modifying passengers. 
+
+Station.h: Interface of Station class.
+
+stations.txt: an example file containing a list of stations.
+
+test_commands.txt: sample list of commands that you could give to
+the simulator
+
+test.cpp: a unit testing file that contains:
+	void read_stat_unit_test();
+	void print_train_unit_test();
+	void command_unit_test();
+	void commFile_unit_test();
+
+	which test their respective function
+
+
+Data Structures:
+
+Testing: 
+
+	Bugs: 
+
+	-I have some functions that are longer than 30 lines.
+	The reason for this was a change in my functions implemented
+	after realizing issues would occur in relation to my scope.
+	I reviewed the functions and many of the lines were taken up
+	by initializing variables (specifically in command and 
+	commandFile), and not due to what was required for the function
+	to do its work
+
+	-files wouldn't update on par with the Halligan 
+	servers, so errors already fixed would continue to appear
+
+	-issues in opening and closing the passFile, specifically
+	in placing where the opening/closing should occur (i.e. in
+	main or MetroSim, inside or outside of loops)
+
+	-issues with vector related functions like pop_back, 
+	push_back and erase. Specifically erase required the extra 
+	line of vector.erase(vector.begin() + indx) instead of 
+	vector.erase(indx)
+
+	-issues in passing files; specifically on how to properly use
+	char* and getting from argv[] and scope issues (i.e. move_train
+	needed the passFile and original design didn't consider the
+	scope issues).
+
+	Unit Testing:
+
+	-print_train()/print_map(): test.cpp checks for proper printing
+	on print_train as it requires less extra writing for testing purposes; 
+	print_train was checked by seeing if it matched the expected line 
+	for the passengers put onto the train with string literal comparisons
+
+	-read_stat(ostream& out): checked by seeing if stations at particular 
+	indices of the "stat" vector matched expectation through checking 
+	station name and checking the id number of the station
+
+	-commandFile(char* two, char* three): checks if passengers were 
+	properly added to their arrival stations after use of 'p' command. 
+	Also checks if the passFile changed correctly after each switch by 
+	seeing if it matched the expected outcome after a particular line of 
+	command_testing.txt was read
+
+
+Note: This homework comes partially implemented, but student must
+also create the driver and add class functionality.
