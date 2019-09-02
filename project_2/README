@@ -1,0 +1,252 @@
+/*********************************************************
+ * Comp 15 Project 2: grep
+ * 
+ * 
+ * Author: Matias Korman, Alyssa Rose
+ * TA: Owen
+ *********************************************************/
+
+*********************************************************************
+gerp:  compile with 'make gerp' and execute with ./gerp [file path] 
+output file]
+
+gerp-unittest: compile with 'make gerp-unittest' and compile with
+	./gerp-unittest
+
+*********************************************************************
+
+This homework assignment contains some files that can be helpful 
+towards  implementing project 2
+
+
+FSTree.h		: interface of FSTree class  (used to explore file
+					directories)
+FSTree.o		: compiled version of FSTree.cpp
+DirNode.h 		: interface of DirNode class (nodes used in FSTree)
+DirNode.o 		: compiled version of DirNode.cpp
+hashExample.cpp : an example on how to use the hash function (and
+					compression) with STL library
+the_gerp		: compiled solution of this assignment (good for 
+					comparing
+					purposes)
+README 			: this file
+Index.h 		: interface of Index class (used to actually perform 
+				hashing and searching functions)
+gerp-unittest.cpp : performs unittests
+
+
+*********************************************************************
+
+/***Files/Classes***/
+
+Index.h/Index.cpp:
+
+	class where all hashing functions are contained. Is responsible
+	for making the hash table, processing the files, inserting words
+	and releasing all memory
+
+	Functions in this class perform all necessary operations for the
+	hash table
+
+gerp.cpp
+
+	driver for the project; contains the loop that prompts user for 
+	queries and handles all other in line commands (like changing 
+	files).It makes the Index object and handles the commands with 
+	the use of helper functions condense() and isCondense() which 
+	remove the leading and trailing non alpha numeric characters 
+	that one might try to query on
+
+FSTree.h/DirNode.h
+
+	provided classes to help make the root node and traverse through
+	files in order to access the words to be hashed.
+
+out/out1/out3/out4.txt
+
+	all instances of testing to show that the program
+	worked properly and was used occassionally to test the
+	pass file command
+
+*********************************************************************
+
+Week1: 
+	
+	General design: an Index class will do most of the work for
+	the project, which is where the indexing and query functions
+	will be held.
+
+	A main program will call a query function (from the index 
+	class) to get user input in order to determine the word (or
+	words) they want to query. It will do so until @q or @quit.
+
+	FSTreeTraversal:
+
+
+	Index class: Design details
+		1.) the class will use the DirNode and FSTree classes
+		 and the FSTreeTraversal in order to work its way
+		 through the directory
+		 2.) As it traverses the directories folders/subfolders/
+		 and files, it will use a hash table to store the words.
+
+		 The initial size of the array will be fairly large and
+		 will be a prime number (for the purpose of the mod
+		 function in order to reduce the chances of collision)
+
+Week2:
+	
+	Index class, README, unit test and driver written
+
+*********************************************************************
+
+/***Data Structures***/
+
+The main data structure of this project is a pointer to a 
+dynamically allocated array of vectors that contain hashnodes.
+
+***hashNode***: 
+
+a hashNode contains the information necessary to properly store
+a word into the hashtable, including the original word, its lower
+case version (which is how the index is determined), the words key (
+the int produced by the hashing), the pathKey which is the index of 
+the 'paths' vector that contains the file path of that particular 
+word, an int representing the line number of the word in that 
+particular file, an int fullLine which contains the index of the 
+fileLines vector in which the full sentence that the word appeared 
+in is stored.
+
+
+***Elements of the HashTable array***:
+
+vectors that contain hashNodes; this was designed in order to handle 
+collisions (i.e. words indexed at the same spot). Vectors 
+specifically were chosen due to automatic shrinking/growing for ease 
+of saving space and expansion and the ease of the functions 
+associated with vectors
+
+***Dynamically allocated HashTable***:
+
+the HashTable is a heap allocated array; this was chosen so that 
+expansionswere possible (expansions occur whenever the number of 
+elements within the table [i.e. number of stored words] divided by 
+the size of the array is greater than 0.75)
+
+
+
+***Space/Time considerations***:
+
+Special vectors were used to store the paths and strings associated 
+to the words in order to prevent redundancy and save space.
+
+Acessing the array is O(1) as the index is quickly acquired from the 
+result of the hashing % size of the array
+
+insertion of a word is at best constant time and at worst 
+around linear time as the old array must be iterated through to 
+rehash all the stored words. The time is closer to linear given the 
+extremely small sizes of the vectors at each spot in the array (
+which is low due to the load factor)
+
+The only memory to release are the pointer associated to the array
+and any possible file/io streams
+
+*********************************************************************
+
+/***Testing***/
+
+	All testing done within the gerp-unittest.cpp
+
+	in order to run the unit tests, compile and execute 
+	gerp-unittest.
+
+	****** NOTE ******* : the results of the unittesting are manually
+	checked and there are supporting checks of the 
+	test_commandDriver()test from the test_commandLineInput() which  
+	is there to ensure that the normal query and case insensitive 
+	queries are capable of handling multiple queries on one line.
+
+	/*****GERP FUNCTIONS*****/
+	void test_commandDriver():
+
+	makes sure that the correct messages
+	are printed as the should be, edge cases considered were user
+	attempting to query multiple words at once in both normal and 
+	case insensitive
+
+	void test_toLower();
+
+	makes sure the string is properly converted to its lowercase form
+	as that is how the words of the hash table are stored
+	
+
+	/*****INDEX CLASS*****/
+	void test_recurseFiles();
+
+	Tests the file printing/traversing on the tinyData directory
+	and prints out the paths of the all the files it traversed 
+	through
+	
+	void test_processFiles();
+
+	Tests that the function can open the file properly testFile2.txt)
+	and correctly reads in the words while printing out the correct
+	line numbers
+
+	void test_insertWord();
+
+	makes sure that the hash function works properly by checking
+	that the words were inserted into the hashtable.
+	Edge cases considered negative hash keys, which is why
+	the absolute value is taken.
+
+	void test_expand();
+
+	Tests the expand function by making sure each element of the
+	old array is copied over properly into the new one and does
+	so by iterating through each of the elements of the old table
+	and printing out the previous and new indices
+	
+
+	Testing was also done normally by the standard gerp, mainly to
+	prevent the need of creating new Index objects for each unit
+	test or to change the header file of the Index class. Specifcally
+	more testing was done through the use of error statments,
+	ESPECIALLY
+	with the capability of the table to know when to expand (LOAD
+	FACTOR) and making sure it was doing it correctly (no memory
+	leaks, all words still present)
+*********************************************************************
+
+/***Notes/Known Bugs/Errors***/
+
+	gerpdiff: 
+
+	output file is different from reference whenever one tries
+	to input multiple case insensitive queries on one line. For
+	instance @i WE aRe tHe CHAMPIONS would query on a case
+	insensitve basis for each of the words under my implementation
+	but in the reference would only query on "WE"
+
+	gerp.cpp main:
+
+	longer than 30 lines; there just was not a simpler way to
+	modularize
+	the code do to the nature of how the ofstream is being handled.
+	It was also a matter of choosing style over the function length
+	as it would've been possible to fit multiple things
+	onto one line but would've sacrificed the style aspect
+
+
+	gerp-unittest:
+
+	longest line is 96 but ruler option on sublime showed
+	that all lines were under 80, so couldn't pinpoint
+	the issue
+
+
+	Index.cpp:
+
+	same issue with over 80 characters; sometimes the formatting
+	did not work
